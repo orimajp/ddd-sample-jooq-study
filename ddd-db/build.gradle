@@ -1,0 +1,75 @@
+
+//def dbUrl = "jdbc:postgresql://${dbHost}:${dbPort}/${dbName}"
+def dbUrl = "jdbc:mariadb://${dbHost}:${dbPort}/${dbName}"
+def jdbcDriver = "org.mariadb.jdbc.Driver"
+//def jooqDestDir = "$buildDir/jooq-gen/"
+def jooqDestDir = "src/main/java/com/example/dddcorestudy/infrastructure/repository/jooq/gen/"
+def jooqDestPackage = 'com.example.db.jooq.gen'
+
+buildscript {
+    dependencies {
+        // コード生成用の依存モジュール定義
+        classpath group: "nu.studer", name:"gradle-jooq-plugin", version:"3.0.3"
+        classpath group: "org.flywaydb", name: "flyway-gradle-plugin", version: "${flywayVersion}"
+//        classpath group: 'org.postgresql', name: 'postgresql', version: "${postgresqlDriverVersion}"
+//        classpath 'org.mariadb.jdbc:mariadb-java-client:${mariaDbDriverVersion}'
+        classpath  group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: "${mariaDbDriverVersion}"
+
+    }
+}
+
+apply plugin: "org.flywaydb.flyway"
+apply plugin: "nu.studer.jooq"
+
+dependencies {
+    compile group: "org.jooq", name:"jooq", version:"${jooqVersion}"
+    testCompile group: "org.flywaydb", name:"flyway-core", version: "${flywayVersion}"
+    testCompile group: "org.springframework.boot", name:"spring-boot-starter-data-jdbc", version:"${springBootVersion}"
+//    jooqRuntime group: 'org.postgresql', name: 'postgresql', version: "${postgresqlDriverVersion}"
+    jooqRuntime group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: "${mariaDbDriverVersion}"
+    jooqRuntime 'org.slf4j:slf4j-simple:1.7.25'
+    jooqRuntime project(':ddd-db-custom-strategy')
+}
+
+flyway {
+    url = "${dbUrl}"
+    user = "${dbUser}"
+    password = "${dbPassword}"
+}
+
+jooq {
+    version = "${jooqVersion}"
+    edition = 'OSS' // if you use oracle, you should pay :-)
+
+    // the name "sample" -> task name "generateSampleJooqSchemaSource" . see below.
+    sample (sourceSets.main) {
+        jdbc {
+            driver = "${jdbcDriver}"
+            url = "${dbUrl}"
+            user = "${dbUser}"
+            password = "${dbPassword}"
+        }
+        generator {
+            target {
+                packageName = "${jooqDestPackage}"
+                directory = "${jooqDestDir}"
+            }
+            strategy {
+                name = 'com.example.dddcorestudy.infrastructure.repository.jooq.generator.SamplePrefixGeneratorStrategy'
+            }
+            database() {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                inputSchema = "${dbName}"
+            }
+            generate() {
+                daos = true
+                immutablePojos = true
+                pojosEqualsAndHashCode = true
+            }
+        }
+    }
+}
+
+clean {
+    delete jooqDestDir
+}

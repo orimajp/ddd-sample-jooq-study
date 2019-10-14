@@ -1,0 +1,5 @@
+rootProject.name = 'ddd-core-jooq-study'
+include 'ddd-external'
+include 'ddd-db'
+include 'ddd-db-custom-strategy'
+include 'ddd-main'
