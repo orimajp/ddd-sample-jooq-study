@@ -4,7 +4,7 @@ import com.example.dddcorestudy.domain.model.cargo.Itinerary;
 import com.example.dddcorestudy.domain.model.cargo.TrackingId;
 import com.example.dddcorestudy.domain.model.location.UnLocode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,7 +20,7 @@ public interface BookingService {
    * @param arrivalDeadline arrival deadline
    * @return Cargo tracking id
    */
-  TrackingId bookNewCargo(UnLocode origin, UnLocode destination, Date arrivalDeadline);
+  TrackingId bookNewCargo(UnLocode origin, UnLocode destination, LocalDateTime arrivalDeadline);
 
   /**
    * Requests a list of itineraries describing possible routes for this cargo.

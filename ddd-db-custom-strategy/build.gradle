@@ -1,4 +1,4 @@
 dependencies {
-    compile "org.jooq:jooq-codegen:${jooqVersion}"
-    compile "org.jooq:jooq-meta:${jooqVersion}"
+    implementation "org.jooq:jooq-codegen:${jooqVersion}"
+    implementation "org.jooq:jooq-meta:${jooqVersion}"
 }

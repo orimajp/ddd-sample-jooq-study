@@ -12,6 +12,12 @@ public final class TrackingId implements ValueObject<TrackingId> {
         this.id = id;
     }
 
+    /**
+     * @return String representation of this tracking id.
+     */
+    public String idString() {
+        return id;
+    }
 
     /**
      * Value objects compare by the values of their attributes, they don't have an identity.

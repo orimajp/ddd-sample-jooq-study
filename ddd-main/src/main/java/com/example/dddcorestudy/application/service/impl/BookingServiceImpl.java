@@ -7,7 +7,7 @@ import com.example.dddcorestudy.domain.model.location.UnLocode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,7 +22,7 @@ public class BookingServiceImpl implements BookingService {
      * @return Cargo tracking id
      */
     @Override
-    public TrackingId bookNewCargo(UnLocode origin, UnLocode destination, Date arrivalDeadline) {
+    public TrackingId bookNewCargo(UnLocode origin, UnLocode destination, LocalDateTime arrivalDeadline) {
         return null;
     }
 

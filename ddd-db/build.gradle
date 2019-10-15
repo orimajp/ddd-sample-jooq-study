@@ -11,7 +11,6 @@ buildscript {
         // コード生成用の依存モジュール定義
         classpath group: "nu.studer", name:"gradle-jooq-plugin", version:"3.0.3"
         classpath group: "org.flywaydb", name: "flyway-gradle-plugin", version: "${flywayVersion}"
-//        classpath group: 'org.postgresql', name: 'postgresql', version: "${postgresqlDriverVersion}"
 //        classpath 'org.mariadb.jdbc:mariadb-java-client:${mariaDbDriverVersion}'
         classpath  group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: "${mariaDbDriverVersion}"
 
@@ -22,10 +21,9 @@ apply plugin: "org.flywaydb.flyway"
 apply plugin: "nu.studer.jooq"
 
 dependencies {
-    compile group: "org.jooq", name:"jooq", version:"${jooqVersion}"
-    testCompile group: "org.flywaydb", name:"flyway-core", version: "${flywayVersion}"
-    testCompile group: "org.springframework.boot", name:"spring-boot-starter-data-jdbc", version:"${springBootVersion}"
-//    jooqRuntime group: 'org.postgresql', name: 'postgresql', version: "${postgresqlDriverVersion}"
+    implementation group: "org.jooq", name:"jooq", version:"${jooqVersion}"
+    testImplementation group: "org.flywaydb", name:"flyway-core", version: "${flywayVersion}"
+    testImplementation group: "org.springframework.boot", name:"spring-boot-starter-data-jdbc", version:"${springBootVersion}"
     jooqRuntime group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: "${mariaDbDriverVersion}"
     jooqRuntime 'org.slf4j:slf4j-simple:1.7.25'
     jooqRuntime project(':ddd-db-custom-strategy')
@@ -65,6 +63,7 @@ jooq {
                 daos = true
                 immutablePojos = true
                 pojosEqualsAndHashCode = true
+                javaTimeTypes = true
             }
         }
     }

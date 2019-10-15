@@ -12,7 +12,7 @@ public class Schedule implements ValueObject<Schedule> {
 
     public static final Schedule EMPTY = new Schedule();
 
-    Schedule(final List<CarrierMovement> carrierMovements) {
+    public Schedule(final List<CarrierMovement> carrierMovements) {
         Validate.notNull(carrierMovements);
         Validate.noNullElements(carrierMovements);
         Validate.notEmpty(carrierMovements);
