@@ -3,7 +3,8 @@
 def dbUrl = "jdbc:mariadb://${dbHost}:${dbPort}/${dbName}"
 def jdbcDriver = "org.mariadb.jdbc.Driver"
 //def jooqDestDir = "$buildDir/jooq-gen/"
-def jooqDestDir = "src/main/java/com/example/dddcorestudy/infrastructure/repository/jooq/gen/"
+//def jooqDestDir = "src/main/java/com/example/dddcorestudy/infrastructure/repository/jooq/gen/"
+def jooqDestDir = "src/main/java/"
 def jooqDestPackage = 'com.example.db.jooq.gen'
 
 buildscript {

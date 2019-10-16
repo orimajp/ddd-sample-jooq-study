@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tracking carg</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <div>
+
+    </div>
+    <div>
+        <section>
+            <form th:action="@{action}" method="post" th:object="${trackCommand}">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            Enter your tracking id:
+                        </td>
+                        <td>
+                            <input th:field="*{trackingId}" id="idInput" />
+                        </td>
+                        <td>
+                            <input type="submit" value="Track!" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <p th:if="${#fileds.hasErrors('trackingId')}" th:errors="*{trackingId}" class="error"></p>
+                        </td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </section>
+
+        <p th:if="${cargo == null}"><em>Hint: try tracking "ABC123" or "JKL567".</em></p>
+
+        <section>
+            <div th:if="${cargo != null}">
+                <h2>Cargo
+                    <th:block th:text="${cargo.getTrackingId()}">tracking id</th:block>
+                    is now:
+                    <th:block th:text="${cargo.getStatusText()}">status text</th:block>
+                </h2>
+
+                <p>
+                    Estimated time of arrlival in
+                    <th:block th:text="${cargo.destination}">destination</th:block>
+                    :
+                    <th:block th:text="${cargo.eta}">eta</th:block>
+                </p>
+
+                <p th:text="${cargo.nextExpectedActivity}"></p>
+
+                <p th:if="${cargo.isMisdirected()}">Cargo is misdirected</p>
+
+                <th:block th:if="${!cargo.events.isEmpty}">
+                    <h3>Handling History</h3>
+                    <ul>
+                        <li th:each="leg: ${cargo.events}">
+                            <p>
+                                <th:block th:if="${leg.isExpected()}">
+
+                                </th:block>
+                                <th:block th:unless="${leg.isExpected()}">
+
+                                </th:block>
+                                <th:block th:text="${leg.getDescription()}" />
+                            </p>
+                        </li>
+                    </ul>
+                </th:block>
+            </div>
+        </section>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script>
+    $(function () {
+        $('#idInput').focus();
+    });
+</script>
+</body>
+</html>

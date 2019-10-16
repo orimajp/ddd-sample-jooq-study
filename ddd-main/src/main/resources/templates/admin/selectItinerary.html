@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cargo Administration</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="adminDecorator :: adminbody"></div>
+<div class="container">
+    <table>
+        <caption>Select route</caption>
+        <tr>
+            <td>
+                Cargo <span th:text="${cargo.trackingId}"></span> is going from <span th:text="${cargo.origin}"></span> to <span
+                    th:text="${cargo.finalDestination}"></span>
+            </td>
+        </tr>
+    </table>
+
+    <p th:if="${#lists.isEmpty(routeCandidates)}">No routes found that satisfy the route specification.
+        Try setting an arrival deadline futher into the future (a few weeks at least).
+    </p>
+
+    <form th:each="it,itStatus: ${routeCandidates}" th:action="@{/adimn/assignItinerary}" method="post">
+        <input type="hidden" name="trackingId" th:value="${cargo.trackingId}" />
+        <table>
+            <caption>Route candidate<span th:text="${itStatus.count}"></span></caption>
+            <thead>
+            <tr>
+                <td>Voyage</td>
+                <td>From</td>
+                <td></td>
+                <td>To</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="leg,legStatus : ${it.legs}">
+                <input type="hidden" th:name="|legs[${legStatus.index}].voyageNumber|" th:value="${leg.voyageNumber}"/>
+                <input type="hidden" th:name="|legs[${legStatus.index}].fromUnLocode|" th:value="${leg.from}"/>
+                <input type="hidden" th:name="|legs[${legStatus.index}].toUnLocode|" th:value="${leg.to}"/>
+                <input type="hidden" th:name="|legs[${legStatus.index}].fromDate|"
+                       th:value="${#temporals.format(leg.loadTime,'yyyy-MM-dd hh:mm')}"/>
+                <input type="hidden" th:name="|legs[${legStatus.index}].toDate|"
+                       th:value="${#temporals.format(leg.unloadTime,'yyyy-MM-dd hh:mm')}"/>
+                <tr>
+                    <td th:text="${leg.voyageNumber}"></td>
+                    <td th:text="${leg.from}"></td>
+                    <td th:text="${#temporals.format(leg.loadTime, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${leg.to}"></td>
+                    <td th:text="${#temporals.format(leg.unloadTime, 'yyyy-MM-dd HH:mm')}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>
+                    <p>
+                        <input type="submit" value="Assign cargo to this route"/>
+                    </p>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

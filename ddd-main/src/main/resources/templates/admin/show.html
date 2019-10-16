@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cargo Administration</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="adminDecorator :: adminbody"></div>
+<div class="container">
+    <section>
+        <table>
+            <caption th:text="'Details for cargo ' + ${cargo.trackingId}"></caption>
+            <tbody>
+            <tr>
+                <td>Origin</td>
+                <td th:text="${cargo.origin}"></td>
+            </tr>
+            <tr>
+                <td>Destination</td>
+                <td th:text="${cargo.finalDestination}"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <a th:href="@{/admin/pickNewDestination(trackingId=${cargo.trackingId})}">Change destination</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Arrival deadline</td>
+                <td th:text="${#temporals.format(cargo.arrivalDeadline, 'dd/MM/yyyy')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <th:block th:if="${cargo.routed}">
+            <th:block th:if="${cargo.misrouted}">
+                <p><em>Cargo is misrounted - <a th:href="@{/admin/selectItinerary(trackingId=${cargo.trackingId})}">reroute this cargo</a> </em></p>
+            </th:block>
+            <table class="table table-bordered">
+                <caption>Itinerary</caption>
+                <thead>
+                <tr>
+                    <td>Voyage number</td>
+                    <td colspan="2">Load</td>
+                    <td colspan="2">Unload</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="leg : ${cargo.legs}">
+                    <td th:text="${leg.voyageNumber}"></td>
+                    <td th:text="${leg.from}"></td>
+                    <td th:text="${#temporals.format(leg.loadTime, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${leg.to}"></td>
+                    <td th:text="${#temporals.format(leg.unloadTime, 'dd/MM/yyyy')}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </th:block>
+        <th:block th:unless="${cargo.routed}">
+            <p>
+                <strong>Not rounted</strong> - <a th:href="@{/admin/selectItinerary(trackingId=${cargo.trackingId})}">Route this cargo</a>
+            </p>
+        </th:block>
+    </section>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

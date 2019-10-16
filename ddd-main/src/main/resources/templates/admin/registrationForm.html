@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cargo Administration</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/webjars/bootstrap/css/bootstrap-datepicker.min.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="adminDecorator :: adminbody"></div>
+<div class="container">
+    <form th:action="@{/admin/register}" method="post">
+        <table>
+            <caption>Book new cargo</caption>
+            <tbody>
+            <tr>
+                <td>Origin</td>
+                <td>
+                    <select name="originUnlocode">
+                        <th:block th:each="unlocode : ${unlocodes}">
+                            <option th:value="${unlocode}" th:text="${unlocode}">unlocode</option>
+                        </th:block>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Destinaion</td>
+                <td>
+                    <select name="destinationUnlocode">
+                        <th:block th:each="unlocode : ${unlocodes}">
+                            <option th:value="${unlocode}" th:text="${unlocode}">unlocode</option>
+                        </th:block>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Arrival deadline:</td>
+                <td>
+                    <input name="arrivalDeadline" type="text" id="arrivalDeadline" th:value="${#temporals.format(#dates.createNow, 'dd/MM/yyyy')}"/>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Book">
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap-datepicker.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('#arrivalDeadline').datepicker({
+            format: "dd/mm/yyyy"
+        });
+    });
+</script>
+</body>
+</html>

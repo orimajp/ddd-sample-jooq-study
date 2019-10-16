@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cargo Administration</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="adminDecorator :: adminbody"></div>
+<div class="container">
+    <form th:action="@{/admin/changeDestination}" method="post">
+        <input type="hidden" name="trackingId" th:value="${cargo.trackingId}">
+        <table>
+            <caption>Change destionation for cargo <span th:text="${cargo.trackingId}"></span></caption>
+            <tbody>
+            <tr>
+                <td>Current destination</td>
+                <td th:text="${cargo.finalDestination}"></td>
+            </tr>
+            <tr>
+                <td>New destination</td>
+                <td>
+                    <select name="unlocode">
+                        <option th:each="location : ${locations}" th:value="${location.unLocode}" th:text="${location.unLocode}"></option>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Change destination">
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

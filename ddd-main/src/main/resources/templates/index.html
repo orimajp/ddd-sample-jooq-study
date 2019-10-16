@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>DDDSample</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <p>Welcome to the <strong>DDDSample</strong> application.</p>
+    <p>There are two web interfaces available:</p>
+    <ul>
+        <li>Public <a th:href="@{track}">cargo tracking</a></li>
+        <li>Administration of <a th:href="@{admin/list}">booking and routing</a>.</li>
+    </ul>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

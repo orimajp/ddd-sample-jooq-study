@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cargo Administration</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="adminDecorator :: adminbody"></div>
+<div class="container">
+    <div>
+        <table class="table table-bordered">
+            <caption>All cargos</caption>
+            <thead>
+            <tr>
+                <td>Tracking ID</td>
+                <td>Origin</td>
+                <td>Desitination</td>
+                <td>Routed</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cargo: ${cargoList}">
+                <td>
+                    <a th:href="@{/admin/show(trackingId=${cargo.trackingId})}"
+                       th:text="${cargo.trackingId}">Tracking id</a>
+                </td>
+                <td th:text="${cargo.origin}">Origin</td>
+                <td th:text="${cargo.finalDestination}">Final destination</td>
+                <td th:text="(${cargo.misrouted} ? 'Misround' : '') + (${cargo.routed} ? 'Yes' : 'No')"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>
