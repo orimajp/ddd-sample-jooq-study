@@ -32,3 +32,5 @@ out/
 .vscode/
 
 log/
+
+.DS_Store

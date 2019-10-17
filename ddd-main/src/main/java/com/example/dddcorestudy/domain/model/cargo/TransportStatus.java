@@ -1,10 +1,24 @@
 package com.example.dddcorestudy.domain.model.cargo;
 
-import com.example.dddcorestudy.domain.model.handling.HandlingEvent;
 import com.example.dddcorestudy.domain.share.ValueObject;
+import com.example.dddcorestudy.presentation.tracking.TransporterStatusParameter;
 
-public enum  TransportStatus implements ValueObject<TransportStatus> {
-    NOT_RECEIVED, IN_PORT, ONBOARD_CARRIER, CLAIMED, UNKNOWN;
+public enum  TransportStatus implements ValueObject<TransportStatus>, TransporterStatusParameter {
+    NOT_RECEIVED,
+    IN_PORT() {
+        @Override
+        public Object[] getStatusTextArguments(Delivery delivery) {
+            return getStatusTextArgumentsForInPort(delivery);
+        }
+    },
+    ONBOARD_CARRIER() {
+        @Override
+        public Object[] getStatusTextArguments(Delivery delivery) {
+            return getStatusTextArgumentsForOnboardCarrier(delivery);
+        }
+    },
+    CLAIMED,
+    UNKNOWN;
 
     /**
      * Value objects compare by the values of their attributes, they don't have an identity.
@@ -17,12 +31,8 @@ public enum  TransportStatus implements ValueObject<TransportStatus> {
         return this.equals(other);
     }
 
-
-/*    public static TransportStatus calculateStatus(HandlingEvent.Type type) {
-        if (type == null) {
-            return NOT_RECEIVED;
-        }
-        return UNKNOWN;
-    }*/
+    public Object[] getStatusTextArguments(Delivery delivery) {
+        return getStatusTextArgumentsDefault(delivery);
+    }
 
 }

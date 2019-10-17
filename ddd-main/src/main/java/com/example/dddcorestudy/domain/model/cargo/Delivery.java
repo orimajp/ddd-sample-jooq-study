@@ -159,9 +159,11 @@ public class Delivery implements ValueObject<Delivery> {
         return calculatedAt;
     }
 
+    public Object[] getStatusTextARguments() {
+        return transportStatus.getStatusTextArguments(this);
+    }
 
     // --- Internal calculations below ---
-
 
     private TransportStatus calculateTransportStatus() {
         if (lastEvent == null) {
@@ -213,7 +215,7 @@ public class Delivery implements ValueObject<Delivery> {
     private HandlingActivity calculateNextExpectedActivity(RouteSpecification routeSpecification, Itinerary itinerary) {
         if (!onTrack()) return NO_ACTIVITY;
         if (lastEvent == null) return new HandlingActivity(HandlingEvent.Type.RECEIVE, routeSpecification.origin());
-        return lastEvent.type().calculateNextActivity(itinerary, lastEvent);
+        return lastEvent.calculateNextActivity(itinerary);
     }
 
     private RoutingStatus calculateRoutingStatus(Itinerary itinerary, RouteSpecification routeSpecification) {

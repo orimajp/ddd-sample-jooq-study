@@ -6,6 +6,8 @@ import com.example.dddcorestudy.domain.model.voyage.Voyage;
 import com.example.dddcorestudy.domain.share.DomainEvent;
 import com.example.dddcorestudy.domain.share.DomainObjectUtils;
 import com.example.dddcorestudy.domain.share.ValueObject;
+import com.example.dddcorestudy.presentation.tracking.HandlingEventDescription;
+import com.example.dddcorestudy.presentation.tracking.NextExpectedActivity;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -23,7 +25,8 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
     private Cargo cargo;
 
     @RequiredArgsConstructor
-    public enum Type implements ValueObject<Type>, ItineraryEventExpection, NextExpectedActivityCalculation {
+    public enum Type implements ValueObject<Type>, ItineraryEventExpection, NextExpectedActivityCalculation,
+            NextExpectedActivity, HandlingEventDescription {
         LOAD(true) {
             @Override
             public boolean isItinerayExpected(Itinerary itinerary, HandlingEvent event) {
@@ -33,6 +36,16 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
             @Override
             public HandlingActivity calculateNextActivity(Itinerary itinerary, HandlingEvent lastEvent) {
                 return calculateNextActivityForLoad(itinerary, lastEvent);
+            }
+
+            @Override
+            public String getNextExpectedActivity(HandlingActivity activity) {
+                return getNextExpectedActivityForLoadEvent(this, activity);
+            }
+
+            @Override
+            public Object[] getDescriptionParameter(HandlingEvent event) {
+                return getDescriptionParameterExistsVoyage(event);
             }
         },
         UNLOAD(true) {
@@ -45,6 +58,16 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
             public HandlingActivity calculateNextActivity(Itinerary itinerary, HandlingEvent lastEvent) {
                 return calculateNextActivityForUnload(itinerary, lastEvent);
             }
+
+            @Override
+            public String getNextExpectedActivity(HandlingActivity activity) {
+                return getNextExpectedActivityForUnloadEvent(this, activity);
+            }
+
+            @Override
+            public Object[] getDescriptionParameter(HandlingEvent event) {
+                return getDescriptionParameterExistsVoyage(event);
+            }
         },
         RECEIVE(false) {
             @Override
@@ -56,11 +79,21 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
             public HandlingActivity calculateNextActivity(Itinerary itinerary, HandlingEvent lastEvent) {
                 return calculateNextActivityForReceive(itinerary, lastEvent);
             }
+
+            @Override
+            public Object[] getDescriptionParameter(HandlingEvent event) {
+                return getDescriptionParameterNoVoyage(event);
+            }
         },
         CLAIM(false) {
             @Override
             public boolean isItinerayExpected(Itinerary itinerary, HandlingEvent event) {
                 return isExpectedForClaim(itinerary, event);
+            }
+
+            @Override
+            public Object[] getDescriptionParameter(HandlingEvent event) {
+                return getDescriptionParameterNoVoyage(event);
             }
         },
         CUSTOMS(false);
@@ -87,6 +120,14 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
 
         public HandlingActivity calculateNextActivity(Itinerary itinerary, HandlingEvent lastEvent) {
             return calculateNextActivityDefault(itinerary, lastEvent);
+        }
+
+        public String getNextExpectedActivity(HandlingActivity activity) {
+            return getNextExpectedActivityDefault(this, activity);
+        }
+
+        public Object[] getDescriptionParameter(HandlingEvent event) {
+            return getDescriptionParameterDefault(event);
         }
 
         /**
@@ -194,6 +235,10 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
 
     public HandlingActivity calculateNextActivity(Itinerary itinerary) {
         return type.calculateNextActivity(itinerary, this);
+    }
+
+    public Object[] getDescriptionParameter() {
+        return type.getDescriptionParameter(this);
     }
 
     @Override
