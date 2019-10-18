@@ -5,6 +5,7 @@ package com.example.db.jooq.gen;
 
 
 import com.example.db.jooq.gen.tables.JCargo;
+import com.example.db.jooq.gen.tables.JCargoToLeg;
 import com.example.db.jooq.gen.tables.JCurrierMovement;
 import com.example.db.jooq.gen.tables.JHandlingEvent;
 import com.example.db.jooq.gen.tables.JItinerary;
@@ -37,7 +38,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JDddSample extends SchemaImpl {
 
-    private static final long serialVersionUID = 1502644369;
+    private static final long serialVersionUID = 1917106977;
 
     /**
      * The reference instance of <code>ddd-sample</code>
@@ -48,6 +49,11 @@ public class JDddSample extends SchemaImpl {
      * 荷物
      */
     public final JCargo CARGO = com.example.db.jooq.gen.tables.JCargo.CARGO;
+
+    /**
+     * The table <code>ddd-sample.cargo_to_leg</code>.
+     */
+    public final JCargoToLeg CARGO_TO_LEG = com.example.db.jooq.gen.tables.JCargoToLeg.CARGO_TO_LEG;
 
     /**
      * The table <code>ddd-sample.currier_movement</code>.
@@ -110,6 +116,7 @@ public class JDddSample extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             JCargo.CARGO,
+            JCargoToLeg.CARGO_TO_LEG,
             JCurrierMovement.CURRIER_MOVEMENT,
             JHandlingEvent.HANDLING_EVENT,
             JItinerary.ITINERARY,

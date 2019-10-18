@@ -4,11 +4,12 @@ import com.example.db.jooq.gen.tables.JCurrierMovement;
 import com.example.db.jooq.gen.tables.JLocation;
 import com.example.db.jooq.gen.tables.JVoyage;
 import com.example.db.jooq.gen.tables.JVoyageToCurrierMovement;
-import com.example.db.jooq.gen.tables.records.CurrierMovementRecord;
-import com.example.db.jooq.gen.tables.records.LocationRecord;
-import com.example.dddcorestudy.domain.model.location.Location;
-import com.example.dddcorestudy.domain.model.location.UnLocode;
-import com.example.dddcorestudy.domain.model.voyage.*;
+import com.example.dddcorestudy.domain.model.voyage.CarrierMovement;
+import com.example.dddcorestudy.domain.model.voyage.Schedule;
+import com.example.dddcorestudy.domain.model.voyage.Voyage;
+import com.example.dddcorestudy.domain.model.voyage.VoyageNumber;
+import com.example.dddcorestudy.domain.model.voyage.VoyageRepository;
+import com.example.dddcorestudy.infrastructure.repository.jooq.assembler.CarrierMovementAssembler;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class VoyageRepositoryJooq implements VoyageRepository {
 
     private final DSLContext dslContext;
+    private final CarrierMovementAssembler carrierMovementAssembler;
 
     /**
      * Finds a voyage using voyage number.
@@ -53,16 +55,8 @@ public class VoyageRepositoryJooq implements VoyageRepository {
         }
 
         final List<CarrierMovement> carrierMovements = records.stream()
-                .map(record -> {
-                     final CurrierMovementRecord currier = record.into(jcurrierMovement);
-                     final LocationRecord departure = record.into(dep);
-                     final LocationRecord arrival = record.into(arv);
-                     return new CarrierMovement(
-                             new Location(new UnLocode(departure.getValue(dep.UNLOCODE)), departure.getValue(dep.NAME)),
-                             new Location(new UnLocode(arrival.getValue(arv.UNLOCODE)), arrival.getValue(arv.NAME)),
-                             currier.getValue(jcurrierMovement.DEPARTURE_TIME),
-                             currier.getValue(jcurrierMovement.ARRIVAL_TIME));
-                }).collect(Collectors.toList());
+                .map(record -> carrierMovementAssembler.createCarrierMovement(record, jcurrierMovement, dep, arv))
+                .collect(Collectors.toList());
 
         return new Voyage(voyageNumber, new Schedule(carrierMovements));
     }

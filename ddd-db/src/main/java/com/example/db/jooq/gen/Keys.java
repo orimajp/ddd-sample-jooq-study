@@ -5,6 +5,7 @@ package com.example.db.jooq.gen;
 
 
 import com.example.db.jooq.gen.tables.JCargo;
+import com.example.db.jooq.gen.tables.JCargoToLeg;
 import com.example.db.jooq.gen.tables.JCurrierMovement;
 import com.example.db.jooq.gen.tables.JHandlingEvent;
 import com.example.db.jooq.gen.tables.JItinerary;
@@ -13,6 +14,7 @@ import com.example.db.jooq.gen.tables.JLocation;
 import com.example.db.jooq.gen.tables.JVoyage;
 import com.example.db.jooq.gen.tables.JVoyageToCurrierMovement;
 import com.example.db.jooq.gen.tables.records.CargoRecord;
+import com.example.db.jooq.gen.tables.records.CargoToLegRecord;
 import com.example.db.jooq.gen.tables.records.CurrierMovementRecord;
 import com.example.db.jooq.gen.tables.records.HandlingEventRecord;
 import com.example.db.jooq.gen.tables.records.ItineraryRecord;
@@ -47,6 +49,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final Identity<CargoRecord, Integer> IDENTITY_CARGO = Identities0.IDENTITY_CARGO;
+    public static final Identity<CargoToLegRecord, Integer> IDENTITY_CARGO_TO_LEG = Identities0.IDENTITY_CARGO_TO_LEG;
     public static final Identity<CurrierMovementRecord, Integer> IDENTITY_CURRIER_MOVEMENT = Identities0.IDENTITY_CURRIER_MOVEMENT;
     public static final Identity<HandlingEventRecord, Integer> IDENTITY_HANDLING_EVENT = Identities0.IDENTITY_HANDLING_EVENT;
     public static final Identity<ItineraryRecord, Integer> IDENTITY_ITINERARY = Identities0.IDENTITY_ITINERARY;
@@ -61,6 +64,8 @@ public class Keys {
 
     public static final UniqueKey<CargoRecord> KEY_CARGO_PRIMARY = UniqueKeys0.KEY_CARGO_PRIMARY;
     public static final UniqueKey<CargoRecord> KEY_CARGO_CARGO_IDX_1 = UniqueKeys0.KEY_CARGO_CARGO_IDX_1;
+    public static final UniqueKey<CargoToLegRecord> KEY_CARGO_TO_LEG_PRIMARY = UniqueKeys0.KEY_CARGO_TO_LEG_PRIMARY;
+    public static final UniqueKey<CargoToLegRecord> KEY_CARGO_TO_LEG_CARGGO_TO_LEG_INDEX_1 = UniqueKeys0.KEY_CARGO_TO_LEG_CARGGO_TO_LEG_INDEX_1;
     public static final UniqueKey<CurrierMovementRecord> KEY_CURRIER_MOVEMENT_PRIMARY = UniqueKeys0.KEY_CURRIER_MOVEMENT_PRIMARY;
     public static final UniqueKey<HandlingEventRecord> KEY_HANDLING_EVENT_PRIMARY = UniqueKeys0.KEY_HANDLING_EVENT_PRIMARY;
     public static final UniqueKey<ItineraryRecord> KEY_ITINERARY_PRIMARY = UniqueKeys0.KEY_ITINERARY_PRIMARY;
@@ -82,6 +87,7 @@ public class Keys {
 
     private static class Identities0 {
         public static Identity<CargoRecord, Integer> IDENTITY_CARGO = Internal.createIdentity(JCargo.CARGO, JCargo.CARGO.ID);
+        public static Identity<CargoToLegRecord, Integer> IDENTITY_CARGO_TO_LEG = Internal.createIdentity(JCargoToLeg.CARGO_TO_LEG, JCargoToLeg.CARGO_TO_LEG.ID);
         public static Identity<CurrierMovementRecord, Integer> IDENTITY_CURRIER_MOVEMENT = Internal.createIdentity(JCurrierMovement.CURRIER_MOVEMENT, JCurrierMovement.CURRIER_MOVEMENT.ID);
         public static Identity<HandlingEventRecord, Integer> IDENTITY_HANDLING_EVENT = Internal.createIdentity(JHandlingEvent.HANDLING_EVENT, JHandlingEvent.HANDLING_EVENT.ID);
         public static Identity<ItineraryRecord, Integer> IDENTITY_ITINERARY = Internal.createIdentity(JItinerary.ITINERARY, JItinerary.ITINERARY.ID);
@@ -94,6 +100,8 @@ public class Keys {
     private static class UniqueKeys0 {
         public static final UniqueKey<CargoRecord> KEY_CARGO_PRIMARY = Internal.createUniqueKey(JCargo.CARGO, "KEY_cargo_PRIMARY", JCargo.CARGO.ID);
         public static final UniqueKey<CargoRecord> KEY_CARGO_CARGO_IDX_1 = Internal.createUniqueKey(JCargo.CARGO, "KEY_cargo_cargo_idx_1", JCargo.CARGO.TRACKING_ID);
+        public static final UniqueKey<CargoToLegRecord> KEY_CARGO_TO_LEG_PRIMARY = Internal.createUniqueKey(JCargoToLeg.CARGO_TO_LEG, "KEY_cargo_to_leg_PRIMARY", JCargoToLeg.CARGO_TO_LEG.ID);
+        public static final UniqueKey<CargoToLegRecord> KEY_CARGO_TO_LEG_CARGGO_TO_LEG_INDEX_1 = Internal.createUniqueKey(JCargoToLeg.CARGO_TO_LEG, "KEY_cargo_to_leg_carggo_to_leg_index_1", JCargoToLeg.CARGO_TO_LEG.CARGO_ID, JCargoToLeg.CARGO_TO_LEG.LEG_ID);
         public static final UniqueKey<CurrierMovementRecord> KEY_CURRIER_MOVEMENT_PRIMARY = Internal.createUniqueKey(JCurrierMovement.CURRIER_MOVEMENT, "KEY_currier_movement_PRIMARY", JCurrierMovement.CURRIER_MOVEMENT.ID);
         public static final UniqueKey<HandlingEventRecord> KEY_HANDLING_EVENT_PRIMARY = Internal.createUniqueKey(JHandlingEvent.HANDLING_EVENT, "KEY_handling_event_PRIMARY", JHandlingEvent.HANDLING_EVENT.ID);
         public static final UniqueKey<ItineraryRecord> KEY_ITINERARY_PRIMARY = Internal.createUniqueKey(JItinerary.ITINERARY, "KEY_itinerary_PRIMARY", JItinerary.ITINERARY.ID);

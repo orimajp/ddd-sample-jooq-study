@@ -1,17 +1,26 @@
 package com.example.dddcorestudy.infrastructure.repository.jooq;
 
+import com.example.db.jooq.gen.tables.JLocation;
+import com.example.db.jooq.gen.tables.records.LocationRecord;
 import com.example.dddcorestudy.domain.model.location.Location;
 import com.example.dddcorestudy.domain.model.location.LocationRepository;
 import com.example.dddcorestudy.domain.model.location.UnLocode;
+import com.example.dddcorestudy.infrastructure.repository.jooq.assembler.LocationAssembler;
 import lombok.RequiredArgsConstructor;
+import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 public class LocationRepositoryJooq implements LocationRepository {
+
+    private final DSLContext dslContext;
+    private final LocationAssembler locationAssembler;
+
     /**
      * Finds a location using given unlocode.
      *
@@ -20,7 +29,18 @@ public class LocationRepositoryJooq implements LocationRepository {
      */
     @Override
     public Optional<Location> find(UnLocode unLocode) {
-        return Optional.empty();
+        final JLocation jLocation = JLocation.LOCATION;
+
+        final LocationRecord locationRecord = dslContext
+                .selectFrom(jLocation)
+                .where(jLocation.UNLOCODE.eq(unLocode.idString()))
+                .fetchAny();
+
+        if (locationRecord == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(locationAssembler.createLocation(locationRecord, jLocation));
     }
 
     /**
@@ -30,6 +50,15 @@ public class LocationRepositoryJooq implements LocationRepository {
      */
     @Override
     public List<Location> findAll() {
-        return null;
+        final JLocation jLocation = JLocation.LOCATION;
+
+        final List<LocationRecord> records = dslContext
+                .selectFrom(jLocation)
+                .fetch();
+
+        return records.stream()
+                .map(locationRecord -> locationAssembler.createLocation(locationRecord, jLocation))
+                .collect(Collectors.toList());
     }
+
 }

@@ -5,6 +5,7 @@ package com.example.db.jooq.gen;
 
 
 import com.example.db.jooq.gen.tables.JCargo;
+import com.example.db.jooq.gen.tables.JCargoToLeg;
 import com.example.db.jooq.gen.tables.JCurrierMovement;
 import com.example.db.jooq.gen.tables.JHandlingEvent;
 import com.example.db.jooq.gen.tables.JItinerary;
@@ -39,6 +40,8 @@ public class Indexes {
 
     public static final Index CARGO_CARGO_IDX_1 = Indexes0.CARGO_CARGO_IDX_1;
     public static final Index CARGO_PRIMARY = Indexes0.CARGO_PRIMARY;
+    public static final Index CARGO_TO_LEG_CARGGO_TO_LEG_INDEX_1 = Indexes0.CARGO_TO_LEG_CARGGO_TO_LEG_INDEX_1;
+    public static final Index CARGO_TO_LEG_PRIMARY = Indexes0.CARGO_TO_LEG_PRIMARY;
     public static final Index CURRIER_MOVEMENT_PRIMARY = Indexes0.CURRIER_MOVEMENT_PRIMARY;
     public static final Index HANDLING_EVENT_PRIMARY = Indexes0.HANDLING_EVENT_PRIMARY;
     public static final Index ITINERARY_ITINERARY_IDX_1 = Indexes0.ITINERARY_ITINERARY_IDX_1;
@@ -56,6 +59,8 @@ public class Indexes {
     private static class Indexes0 {
         public static Index CARGO_CARGO_IDX_1 = Internal.createIndex("cargo_idx_1", JCargo.CARGO, new OrderField[] { JCargo.CARGO.TRACKING_ID }, true);
         public static Index CARGO_PRIMARY = Internal.createIndex("PRIMARY", JCargo.CARGO, new OrderField[] { JCargo.CARGO.ID }, true);
+        public static Index CARGO_TO_LEG_CARGGO_TO_LEG_INDEX_1 = Internal.createIndex("carggo_to_leg_index_1", JCargoToLeg.CARGO_TO_LEG, new OrderField[] { JCargoToLeg.CARGO_TO_LEG.CARGO_ID, JCargoToLeg.CARGO_TO_LEG.LEG_ID }, true);
+        public static Index CARGO_TO_LEG_PRIMARY = Internal.createIndex("PRIMARY", JCargoToLeg.CARGO_TO_LEG, new OrderField[] { JCargoToLeg.CARGO_TO_LEG.ID }, true);
         public static Index CURRIER_MOVEMENT_PRIMARY = Internal.createIndex("PRIMARY", JCurrierMovement.CURRIER_MOVEMENT, new OrderField[] { JCurrierMovement.CURRIER_MOVEMENT.ID }, true);
         public static Index HANDLING_EVENT_PRIMARY = Internal.createIndex("PRIMARY", JHandlingEvent.HANDLING_EVENT, new OrderField[] { JHandlingEvent.HANDLING_EVENT.ID }, true);
         public static Index ITINERARY_ITINERARY_IDX_1 = Internal.createIndex("itinerary_idx_1", JItinerary.ITINERARY, new OrderField[] { JItinerary.ITINERARY.CARGO_ID, JItinerary.ITINERARY.LEG_ID }, true);

@@ -5,6 +5,7 @@ package com.example.db.jooq.gen;
 
 
 import com.example.db.jooq.gen.tables.JCargo;
+import com.example.db.jooq.gen.tables.JCargoToLeg;
 import com.example.db.jooq.gen.tables.JCurrierMovement;
 import com.example.db.jooq.gen.tables.JHandlingEvent;
 import com.example.db.jooq.gen.tables.JItinerary;
@@ -33,6 +34,11 @@ public class Tables {
      * 荷物
      */
     public static final JCargo CARGO = com.example.db.jooq.gen.tables.JCargo.CARGO;
+
+    /**
+     * The table <code>ddd-sample.cargo_to_leg</code>.
+     */
+    public static final JCargoToLeg CARGO_TO_LEG = com.example.db.jooq.gen.tables.JCargoToLeg.CARGO_TO_LEG;
 
     /**
      * The table <code>ddd-sample.currier_movement</code>.
