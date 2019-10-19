@@ -15,12 +15,12 @@ public interface BookingService {
   /**
    * Registers a new cargo in the tracking system, not yet routed.
    *
-   * @param origin      cargo origin
-   * @param destination cargo destination
+   * @param originUnLocode      cargo origin
+   * @param destinationUnLocode cargo destination
    * @param arrivalDeadline arrival deadline
    * @return Cargo tracking id
    */
-  TrackingId bookNewCargo(UnLocode origin, UnLocode destination, LocalDateTime arrivalDeadline);
+  TrackingId bookNewCargo(UnLocode originUnLocode, UnLocode destinationUnLocode, LocalDateTime arrivalDeadline);
 
   /**
    * Requests a list of itineraries describing possible routes for this cargo.
